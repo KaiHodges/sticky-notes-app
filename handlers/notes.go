@@ -1,0 +1,1 @@
+// Handle requests etc. for sticky notes
