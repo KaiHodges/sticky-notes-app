@@ -28,21 +28,7 @@
 }
 
 
-.note {
-    background-color: #fff9a6;
-    padding: 10px;
-    margin: 10px;
-    width: 150px;
-    height: 150px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    overflow: auto;
-}
 
-.note:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
-}
 
 #notes-container {
     display: flex;
@@ -77,4 +63,30 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.note {
+    background-color: #fff9a6;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    min-width: 200px;
+    height: 200px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+.note-title {
+    font-weight: bold;
+    font-size: 18px;
+    border-bottom: 1px solid rgb(36, 183, 252);
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+}
+
+.note-body {
+    font-size: 14px;
+    height: 150px;
+    overflow-y: auto;
+
 }
