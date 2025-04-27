@@ -1,7 +1,7 @@
 import { saveNotes } from './noteStorage.js';
 
 // Creates a new editable sticky note and appends it to the notes container
-export function createStickyNote(title = "Note Title", body = "Type your note here...") {
+export function createStickyNote(title = "Title", body = "Content") {
     // Create the main note container
     const note = document.createElement("div");
     note.classList.add("note");
