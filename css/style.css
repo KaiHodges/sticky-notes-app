@@ -74,6 +74,14 @@ body {
     min-width: 200px;
     height: 200px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    position: relative;
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .note-title {
@@ -81,7 +89,35 @@ body {
     font-size: 18px;
     border-bottom: 1px solid rgb(36, 183, 252);
     padding-bottom: 5px;
-    margin-bottom: 8px;
+    flex-grow: 1;
+}
+
+.delete-note {
+    background-color: transparent;
+    border: none;
+    color: #999;
+    font-size: 20px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    transition: all 0.2s ease;
+    margin-left: 5px;
+}
+
+.delete-note:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #555;
+}
+
+.delete-note:active {
+    background-color: rgba(0, 0, 0, 0.1);
+    transform: scale(0.95);
 }
 
 .note-body {
