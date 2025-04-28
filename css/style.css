@@ -1,6 +1,7 @@
 #btnContainer {
     text-align: center;
 }
+
 .buttons {
     padding: 10px 20px;
     font-size: 1.5em;
@@ -13,20 +14,24 @@
     outline: none;
     box-shadow: none;
 }
+
 .buttons:hover {
     background-color: rgb(30, 160, 230);
     transform: translateY(-1px);
 }
+
 .buttons:active {
     background-color: rgb(25, 140, 200);
     transform: translateY(0);
 }
+
 #notes-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     padding: 20px;
 }
+
 .main-heading {
     text-align: center;
     font-size: 3rem;
@@ -35,6 +40,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     letter-spacing: 2px;
 }
+
 .sub-heading {
     text-align: center;
     font-size: 1.1rem;
@@ -43,6 +49,7 @@
     margin-bottom: 20px;
     font-style: italic;
 }
+
 body {
     min-height: 100vh;
     background: linear-gradient(to bottom, #f0f4f8, #ffffff);
@@ -50,6 +57,7 @@ body {
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .note {
     background-color: #fff9a6;
     border-radius: 5px;
@@ -61,6 +69,7 @@ body {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     position: relative;
 }
+
 .note-header {
     display: flex;
     justify-content: space-between;
@@ -69,6 +78,7 @@ body {
     overflow: visible;
     /* Allow title to be visible when scrolling */
 }
+
 .note-title {
     font-weight: bold;
     font-size: 18px;
@@ -80,21 +90,25 @@ body {
     /* Enable horizontal scrolling */
     overflow-y: hidden;
     /* Prevent vertical scrolling */
-    max-width: calc(100% - 35px);  /* Adjusted for dropdown width */
+    max-width: calc(100% - 35px);
+    /* Adjusted for dropdown width */
     scrollbar-width: thin;
     /* For Firefox */
     -ms-overflow-style: none;
     /* For IE and Edge */
 }
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .note-title::-webkit-scrollbar {
     display: none;
 }
+
 /* Make scroll position start at left */
 .note-title:focus {
     scroll-behavior: auto;
     scroll-left: 0;
 }
+
 .delete-note {
     background-color: transparent;
     border: none;
@@ -112,14 +126,17 @@ body {
     transition: all 0.2s ease;
     margin-left: 5px;
 }
+
 .delete-note:hover {
     background-color: rgba(0, 0, 0, 0.05);
     color: #555;
 }
+
 .delete-note:active {
     background-color: rgba(0, 0, 0, 0.1);
     transform: scale(0.95);
 }
+
 .note-body {
     font-size: 14px;
     height: 150px;
@@ -204,7 +221,7 @@ body {
     height: 16px;
     border-radius: 3px;
     margin-right: 8px;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-divider {
