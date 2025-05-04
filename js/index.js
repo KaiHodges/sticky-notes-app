@@ -15,5 +15,35 @@ clearAll.addEventListener("click", () => {
     localStorage.removeItem('stickyNotes');
 });
 
-// Load saved notes when the page loads
-document.addEventListener('DOMContentLoaded', loadNotes);
+// Function to toggle dark mode
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    // Save preference to localStorage
+    if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        localStorage.setItem('darkMode', 'disabled');
+    }
+}
+
+// Function to check if dark mode is enabled in localStorage
+function checkDarkModePreference() {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+}
+
+// Set up dark mode toggle
+document.addEventListener('DOMContentLoaded', () => {
+    // Load saved notes
+    loadNotes();
+
+    // Check if dark mode was previously enabled
+    checkDarkModePreference();
+
+    // Set up event listener for dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+});
