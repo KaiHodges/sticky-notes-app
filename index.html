@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/noteDropDown.css">
     <link rel="stylesheet" href="css/notes.css">
     <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="css/categories.css">
     <script type="module" src="js/index.js"></script>
 </head>
 
@@ -24,13 +25,16 @@
 
     <header>
         <h1 class="main-heading">Sticky Notes</h1>
-        <p class="sub-heading">Click + to create a new note.</p>
+        <p class="sub-heading">Organize your thoughts by category.</p>
     </header>
 
-    <div id="notes-container"></div>
+    <div id="notes-container">
+        <!-- Category sections will be created dynamically -->
+    </div>
 
     <div id="btnContainer">
         <button id="addNewnote" class="buttons">+</button>
+        <button id="addCategory" class="buttons">New Category</button>
         <button id="clearAll" class="buttons">Clear All</button>
     </div>
 
