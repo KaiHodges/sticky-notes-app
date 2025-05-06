@@ -147,6 +147,21 @@ function createCategorySection(categoryName) {
     const dropdownContent = document.createElement('div');
     dropdownContent.classList.add('dropdown-content');
 
+    // Add new note option
+    const newNoteOption = document.createElement('div');
+    newNoteOption.classList.add('dropdown-item', 'new-note-option');
+    newNoteOption.textContent = 'Add new note';
+    newNoteOption.addEventListener('click', () => {
+        createStickyNote("Title", "Content", "#fff9a6", categoryName);
+        dropdownContent.classList.remove('show');
+    });
+    dropdownContent.appendChild(newNoteOption);
+
+    // Add divider between options
+    const divider = document.createElement('div');
+    divider.classList.add('dropdown-divider');
+    dropdownContent.appendChild(divider);
+
     // Add delete option
     const deleteOption = document.createElement('div');
     deleteOption.classList.add('dropdown-item', 'delete-option');

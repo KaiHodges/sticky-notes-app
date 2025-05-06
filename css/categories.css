@@ -127,6 +127,15 @@
     color: #333;
 }
 
+/* New note option in category dropdown */
+.new-note-option {
+    color: #24b7fc;
+}
+
+body.dark-mode .new-note-option {
+    color: #58b6e6;
+}
+
 /* Dark mode support */
 body.dark-mode .category-header {
     background-color: rgba(88, 182, 230, 0.2);
