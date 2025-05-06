@@ -40,6 +40,20 @@ function showAddNoteDialog() {
     title.textContent = 'Create New Note';
     modalContent.appendChild(title);
 
+    // Create title input field
+    const titleLabel = document.createElement('label');
+    titleLabel.textContent = 'Note Title:';
+    titleLabel.setAttribute('for', 'note-title-input');
+    modalContent.appendChild(titleLabel);
+
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.id = 'note-title-input';
+    titleInput.className = 'modal-input';
+    titleInput.placeholder = 'Enter note title';
+    titleInput.value = 'Title';
+    modalContent.appendChild(titleInput);
+
     // Create category selection
     const categoryLabel = document.createElement('label');
     categoryLabel.textContent = 'Select Category:';
@@ -74,7 +88,8 @@ function showAddNoteDialog() {
     createButton.classList.add('primary-button');
     createButton.addEventListener('click', () => {
         const selectedCategory = categorySelect.value;
-        createStickyNote("Title", "Content", "#fff9a6", selectedCategory);
+        const noteTitle = titleInput.value.trim() || 'Title'; // Use entered title or default to 'Title'
+        createStickyNote(noteTitle, "Content", "#fff9a6", selectedCategory);
         document.body.removeChild(modal);
     });
 

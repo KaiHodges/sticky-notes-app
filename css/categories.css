@@ -65,6 +65,29 @@
     background-color: white;
 }
 
+/* Input fields in modal */
+.modal-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+body.dark-mode .modal-input {
+    background-color: #444;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+/* Adjust spacing for label after input */
+.modal-content label:not(:first-of-type) {
+    margin-top: 5px;
+}
+
 .modal-buttons {
     display: flex;
     justify-content: flex-end;
