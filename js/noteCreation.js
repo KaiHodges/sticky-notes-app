@@ -60,49 +60,65 @@ export function createStickyNote(title = "Title", body = "Content", color = "#ff
         dropdownContent.appendChild(colorElement);
     });
 
-    // Add category selection to dropdown
-    const categoryDivider = document.createElement("div");
-    categoryDivider.classList.add("dropdown-divider");
-    dropdownContent.appendChild(categoryDivider);
-
-    // Add category section title
-    const categoryTitle = document.createElement("div");
-    categoryTitle.classList.add("dropdown-section-title");
-    categoryTitle.textContent = "Move to category:";
-    dropdownContent.appendChild(categoryTitle);
-
-    // Add category options
-    getCategories().forEach(categoryName => {
-        const categoryOption = document.createElement("div");
-        categoryOption.classList.add("dropdown-item", "category-option");
-
-        if (categoryName === category) {
-            categoryOption.classList.add("active-category");
+    // Function to build category options - this will be called each time the dropdown is opened
+    function buildCategoryOptions() {
+        // Remove any existing category options
+        const existingCategorySection = dropdownContent.querySelector('.category-section-container');
+        if (existingCategorySection) {
+            existingCategorySection.remove();
         }
 
-        categoryOption.textContent = categoryName;
+        // Create container for category section
+        const categorySectionContainer = document.createElement('div');
+        categorySectionContainer.classList.add('category-section-container');
 
-        // Add event listener to change note category
-        categoryOption.addEventListener('click', () => {
-            note.dataset.category = categoryName;
-            dropdownContent.classList.remove("show");
+        // Add category section title
+        const categoryTitle = document.createElement("div");
+        categoryTitle.classList.add("dropdown-section-title");
+        categoryTitle.textContent = "Move to category:";
+        categorySectionContainer.appendChild(categoryTitle);
 
-            // Move the note to the correct category section in the UI
-            const categorySection = document.querySelector(`.category-section[data-category="${categoryName}"]`);
-            if (categorySection) {
-                const notesContainer = categorySection.querySelector('.category-notes');
-                notesContainer.appendChild(note);
-                saveNotes();
+        // Add category options
+        getCategories().forEach(categoryName => {
+            const categoryOption = document.createElement("div");
+            categoryOption.classList.add("dropdown-item", "category-option");
+
+            if (categoryName === note.dataset.category) {
+                categoryOption.classList.add("active-category");
             }
+
+            categoryOption.textContent = categoryName;
+
+            // Add event listener to change note category
+            categoryOption.addEventListener('click', () => {
+                note.dataset.category = categoryName;
+                dropdownContent.classList.remove("show");
+
+                // Move the note to the correct category section in the UI
+                const categorySection = document.querySelector(`.category-section[data-category="${categoryName}"]`);
+                if (categorySection) {
+                    const notesContainer = categorySection.querySelector('.category-notes');
+                    notesContainer.appendChild(note);
+                    saveNotes();
+                }
+            });
+
+            categorySectionContainer.appendChild(categoryOption);
         });
 
-        dropdownContent.appendChild(categoryOption);
-    });
+        // Add divider before category section
+        const dividerBefore = document.createElement("div");
+        dividerBefore.classList.add("dropdown-divider");
+        dropdownContent.appendChild(dividerBefore);
 
-    // Add divider before delete option
-    const divider = document.createElement("div");
-    divider.classList.add("dropdown-divider");
-    dropdownContent.appendChild(divider);
+        // Add the category section
+        dropdownContent.appendChild(categorySectionContainer);
+
+        // Add divider after category section
+        const dividerAfter = document.createElement("div");
+        dividerAfter.classList.add("dropdown-divider");
+        dropdownContent.appendChild(dividerAfter);
+    }
 
     // Add delete option
     const deleteOption = document.createElement("div");
@@ -114,9 +130,15 @@ export function createStickyNote(title = "Title", body = "Content", color = "#ff
     });
     dropdownContent.appendChild(deleteOption);
 
-    // Toggle dropdown visibility when clicked
+    // Toggle dropdown visibility when clicked and rebuild category options
     dropdownToggle.addEventListener('click', (e) => {
         e.stopPropagation();
+
+        // If we're opening the dropdown, rebuild the category options
+        if (!dropdownContent.classList.contains("show")) {
+            buildCategoryOptions();
+        }
+
         dropdownContent.classList.toggle("show");
     });
 
