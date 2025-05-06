@@ -133,8 +133,55 @@ function createCategorySection(categoryName) {
     title.classList.add('category-title');
     title.textContent = categoryName;
 
-    // Add category title to header
+    // Create dropdown for category actions
+    const dropdownContainer = document.createElement('div');
+    dropdownContainer.classList.add('dropdown-container', 'category-dropdown');
+
+    // Create dropdown toggle (three dots)
+    const dropdownToggle = document.createElement('button');
+    dropdownToggle.classList.add('dropdown-toggle');
+    dropdownToggle.innerHTML = '⋮'; // Three vertical dots
+    dropdownToggle.setAttribute('aria-label', 'Category options');
+
+    // Create dropdown content
+    const dropdownContent = document.createElement('div');
+    dropdownContent.classList.add('dropdown-content');
+
+    // Add delete option
+    const deleteOption = document.createElement('div');
+    deleteOption.classList.add('dropdown-item', 'delete-option');
+    deleteOption.textContent = 'Delete category';
+    deleteOption.addEventListener('click', () => {
+        handleCategoryRemoval(categoryName, section);
+    });
+
+    dropdownContent.appendChild(deleteOption);
+
+    // Toggle dropdown visibility when clicked
+    dropdownToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+        if (dropdownContent.classList.contains('show')) {
+            dropdownContent.classList.remove('show');
+        }
+    });
+
+    // Prevent dropdown from closing when clicking inside it
+    dropdownContent.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Assemble dropdown
+    dropdownContainer.appendChild(dropdownToggle);
+    dropdownContainer.appendChild(dropdownContent);
+
+    // Add title and dropdown to header
     header.appendChild(title);
+    header.appendChild(dropdownContainer);
 
     // Create container for notes in this category
     const categoryNotes = document.createElement('div');
@@ -146,6 +193,53 @@ function createCategorySection(categoryName) {
 
     // Add to main container
     container.appendChild(section);
+}
+
+// Function to handle category removal
+function handleCategoryRemoval(categoryName, sectionElement) {
+    const categories = getCategories();
+
+    // Don't allow removing the last category
+    if (categories.length <= 1) {
+        alert("Cannot delete the only remaining category");
+        return;
+    }
+
+    // Confirm deletion
+    if (!confirm(`Are you sure you want to delete the "${categoryName}" category? All notes in this category will be moved to the first available category.`)) {
+        return;
+    }
+
+    // Find alternative category to move notes to
+    const alternativeCategory = categories.find(cat => cat !== categoryName);
+
+    // Get all notes in this category
+    const notes = sectionElement.querySelectorAll('.note');
+
+    if (notes.length > 0) {
+        // Find the target category section
+        const targetSection = document.querySelector(`.category-section[data-category="${alternativeCategory}"]`);
+        const targetNotesContainer = targetSection.querySelector('.category-notes');
+
+        // Move each note to the alternative category
+        notes.forEach(note => {
+            note.dataset.category = alternativeCategory;
+            targetNotesContainer.appendChild(note);
+        });
+    }
+
+    // Remove the category section from UI
+    sectionElement.remove();
+
+    // Remove the category from storage
+    const index = categories.indexOf(categoryName);
+    if (index !== -1) {
+        categories.splice(index, 1);
+        localStorage.setItem('noteCategories', JSON.stringify(categories));
+    }
+
+    // Save notes with updated categories
+    saveNotes();
 }
 
 // Function to toggle dark mode
