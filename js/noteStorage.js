@@ -1,4 +1,5 @@
 import { createStickyNote } from './noteCreation.js';
+import { getCategories } from './categoryManagement.js';
 
 // Function to save notes to localStorage
 export function saveNotes() {
@@ -10,7 +11,8 @@ export function saveNotes() {
         const title = noteElement.querySelector('.note-title').innerHTML;
         const body = noteElement.querySelector('.note-body').innerHTML;
         const color = noteElement.style.backgroundColor;
-        notes.push({ title, body, color });
+        const category = noteElement.dataset.category;
+        notes.push({ title, body, color, category });
     });
     // Save to localStorage
     localStorage.setItem('stickyNotes', JSON.stringify(notes));
@@ -23,7 +25,9 @@ export function loadNotes() {
         const notes = JSON.parse(savedNotes);
         // Create each saved note
         notes.forEach(note => {
-            createStickyNote(note.title, note.body, note.color);
+            // Use the saved category or default to the first category
+            const category = note.category || getCategories()[0];
+            createStickyNote(note.title, note.body, note.color, category);
         });
     }
 }
