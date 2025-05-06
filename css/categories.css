@@ -221,3 +221,34 @@ body.dark-mode .dropdown-item.color-option:hover {
 body.dark-mode .dropdown-item.color-option .color-swatch {
     border-color: rgba(255, 255, 255, 0.2);
 }
+
+/* Color swatch options in the add category modal */
+.color-options-container {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0 15px 0;
+    flex-wrap: wrap;
+}
+
+.color-swatch-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-swatch-option:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch-option.selected {
+    border-color: #333;
+    transform: scale(1.1);
+}
+
+/* Dark mode support for color swatches in modal */
+body.dark-mode .color-swatch-option.selected {
+    border-color: #fff;
+}
