@@ -14,8 +14,14 @@ addNewNote.addEventListener("click", () => {
 
 // Add event listener to clear all notes from the container
 clearAll.addEventListener("click", () => {
-    document.getElementById("notes-container").innerHTML = "";
-    // Clear localStorage
+    // Instead of clearing the entire container, only remove the notes
+    // within each category section
+    const categoryNotes = document.querySelectorAll('.category-notes');
+    categoryNotes.forEach(notesContainer => {
+        notesContainer.innerHTML = '';
+    });
+
+    // Clear notes from localStorage but preserve categories
     localStorage.removeItem('stickyNotes');
 });
 
