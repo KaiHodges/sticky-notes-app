@@ -1,6 +1,6 @@
 import { saveNotes, loadNotes } from './noteStorage.js';
 import { createStickyNote } from './noteCreation.js';
-import { getCategories, addCategory } from './categoryManagement.js';
+import { getCategories, addCategory, getCategoryColor, setCategoryColor } from './categoryManagement.js';
 
 // Get reference to the "Add Note" and "Clear All" buttons
 const addNewNote = document.getElementById("addNewnote");
@@ -143,6 +143,10 @@ function createCategorySection(categoryName) {
     const header = document.createElement('div');
     header.classList.add('category-header');
 
+    // Set the saved color or default
+    const categoryColor = getCategoryColor(categoryName);
+    header.style.backgroundColor = categoryColor;
+
     // Create category title
     const title = document.createElement('h2');
     title.classList.add('category-title');
@@ -162,6 +166,51 @@ function createCategorySection(categoryName) {
     const dropdownContent = document.createElement('div');
     dropdownContent.classList.add('dropdown-content');
 
+    // Add color options to dropdown
+    const colorSectionHeader = document.createElement('div');
+    colorSectionHeader.classList.add('dropdown-section-title');
+    colorSectionHeader.textContent = 'Change color:';
+    dropdownContent.appendChild(colorSectionHeader);
+
+    // Define color options
+    const colorOptions = [
+        { name: "Default Blue", value: "rgba(36, 183, 252, 0.1)" },
+        { name: "Light Green", value: "rgba(76, 217, 100, 0.1)" },
+        { name: "Light Pink", value: "rgba(255, 59, 148, 0.1)" },
+        { name: "Light Purple", value: "rgba(88, 86, 214, 0.1)" },
+        { name: "Light Orange", value: "rgba(255, 149, 0, 0.1)" }
+    ];
+
+    // Create color option elements
+    colorOptions.forEach(colorOption => {
+        const colorElement = document.createElement('div');
+        colorElement.classList.add('dropdown-item', 'color-option');
+
+        const colorSwatch = document.createElement('span');
+        colorSwatch.classList.add('color-swatch');
+        colorSwatch.style.backgroundColor = colorOption.value;
+
+        const colorText = document.createElement('span');
+        colorText.textContent = colorOption.name;
+
+        colorElement.appendChild(colorSwatch);
+        colorElement.appendChild(colorText);
+
+        // Add event listener to change category color
+        colorElement.addEventListener('click', () => {
+            header.style.backgroundColor = colorOption.value;
+            setCategoryColor(categoryName, colorOption.value);
+            dropdownContent.classList.remove('show');
+        });
+
+        dropdownContent.appendChild(colorElement);
+    });
+
+    // Add divider
+    const divider = document.createElement('div');
+    divider.classList.add('dropdown-divider');
+    dropdownContent.appendChild(divider);
+
     // Add new note option
     const newNoteOption = document.createElement('div');
     newNoteOption.classList.add('dropdown-item', 'new-note-option');
@@ -173,9 +222,9 @@ function createCategorySection(categoryName) {
     dropdownContent.appendChild(newNoteOption);
 
     // Add divider between options
-    const divider = document.createElement('div');
-    divider.classList.add('dropdown-divider');
-    dropdownContent.appendChild(divider);
+    const divider2 = document.createElement('div');
+    divider2.classList.add('dropdown-divider');
+    dropdownContent.appendChild(divider2);
 
     // Add delete option
     const deleteOption = document.createElement('div');

@@ -1,5 +1,6 @@
 // Default categories
 const DEFAULT_CATEGORIES = ['Work', 'Personal', 'Ideas', 'Tasks'];
+const DEFAULT_CATEGORY_COLOR = 'rgba(36, 183, 252, 0.1)'; // Default light blue
 
 // Get all categories (existing ones from storage or defaults)
 export function getCategories() {
@@ -40,6 +41,13 @@ export function removeCategory(categoryToRemove, newCategory) {
     categories.splice(index, 1);
     saveCategories(categories);
 
+    // Get saved category colors and remove the deleted category color
+    const categoryColors = getCategoryColors();
+    if (categoryColors[categoryToRemove]) {
+        delete categoryColors[categoryToRemove];
+        saveCategoryColors(categoryColors);
+    }
+
     // Reassign notes from the removed category to the new category
     const savedNotes = localStorage.getItem('stickyNotes');
     if (savedNotes) {
@@ -53,4 +61,32 @@ export function removeCategory(categoryToRemove, newCategory) {
     }
 
     return true;
+}
+
+// Get all category colors from localStorage
+export function getCategoryColors() {
+    const savedColors = localStorage.getItem('categoryColors');
+    if (savedColors) {
+        return JSON.parse(savedColors);
+    }
+    return {};
+}
+
+// Save category colors to localStorage
+export function saveCategoryColors(colorMap) {
+    localStorage.setItem('categoryColors', JSON.stringify(colorMap));
+}
+
+// Set color for a specific category
+export function setCategoryColor(categoryName, colorValue) {
+    const categoryColors = getCategoryColors();
+    categoryColors[categoryName] = colorValue;
+    saveCategoryColors(categoryColors);
+    return true;
+}
+
+// Get color for a specific category, return default if not found
+export function getCategoryColor(categoryName) {
+    const categoryColors = getCategoryColors();
+    return categoryColors[categoryName] || DEFAULT_CATEGORY_COLOR;
 }
