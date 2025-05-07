@@ -91,3 +91,70 @@
     background-color: rgba(0, 0, 0, 0.1);
     transform: scale(0.95);
 }
+
+.note-deadline-container {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin: 5px 0;
+    color: #555;
+}
+
+.deadline-icon {
+    margin-right: 5px;
+}
+
+.deadline-text {
+    font-weight: bold;
+}
+
+/* Visual indicators for deadlines */
+.deadline-approaching {
+    border-left: 4px solid orange;
+}
+
+.deadline-overdue {
+    border-left: 4px solid red;
+}
+
+/* Make the note body smaller to accommodate the deadline */
+.note-deadline-container + .note-body {
+    height: 125px;
+}
+
+/* Dark mode support */
+body.dark-mode .note-deadline-container {
+    color: #aaa;
+}
+
+/* Date input styles */
+input[type="date"] {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px;
+    font-family: inherit;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+body.dark-mode input[type="date"] {
+    background-color: #444;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+/* Add to note dropdown styles */
+.deadline-option {
+    color: #555;
+}
+
+body.dark-mode .deadline-option {
+    color: #aaa;
+}
+
+/* Add to modal buttons */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}

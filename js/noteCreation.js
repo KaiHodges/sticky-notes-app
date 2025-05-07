@@ -1,13 +1,14 @@
 import { saveNotes } from './noteStorage.js';
 import { getCategories } from './categoryManagement.js';
 
-// Creates a new editable sticky note and appends it to the notes container
-export function createStickyNote(title = "Title", body = "Content", color = "#fff9a6", category = "Personal") {
+// Update the createStickyNote function to include deadline parameter
+export function createStickyNote(title = "Title", body = "Content", color = "#fff9a6", category = "Personal", deadline = "") {
     // Create the main note container
     const note = document.createElement("div");
     note.classList.add("note");
     note.style.backgroundColor = color;
     note.dataset.category = category; // Store category in data attribute
+    note.dataset.deadline = deadline; // Store deadline in data attribute
 
     // Create note header to contain title and dropdown menu
     const noteHeader = document.createElement("div");
@@ -120,6 +121,21 @@ export function createStickyNote(title = "Title", body = "Content", color = "#ff
         dropdownContent.appendChild(dividerAfter);
     }
 
+    // Add set deadline option
+    const setDeadlineOption = document.createElement("div");
+    setDeadlineOption.classList.add("dropdown-item", "deadline-option");
+    setDeadlineOption.textContent = "Set deadline";
+    setDeadlineOption.addEventListener('click', () => {
+        showDeadlineDialog(note);
+        dropdownContent.classList.remove("show");
+    });
+    dropdownContent.appendChild(setDeadlineOption);
+
+    // Add divider after deadline option
+    const dividerAfterDeadline = document.createElement("div");
+    dividerAfterDeadline.classList.add("dropdown-divider");
+    dropdownContent.appendChild(dividerAfterDeadline);
+
     // Add delete option
     const deleteOption = document.createElement("div");
     deleteOption.classList.add("dropdown-item", "delete-option");
@@ -168,6 +184,12 @@ export function createStickyNote(title = "Title", body = "Content", color = "#ff
     noteHeader.appendChild(noteTitle);
     noteHeader.appendChild(dropdownContainer);
 
+    // Create deadline display element if a deadline exists
+    if (deadline) {
+        const deadlineElement = createDeadlineElement(deadline);
+        note.appendChild(deadlineElement);
+    }
+
     // Create body element
     const noteBody = document.createElement("div");
     noteBody.classList.add("note-body");
@@ -181,6 +203,9 @@ export function createStickyNote(title = "Title", body = "Content", color = "#ff
     // Append header and body to the note
     note.appendChild(noteHeader);
     note.appendChild(noteBody);
+
+    // Check and update the deadline status (for visual indicator)
+    updateDeadlineStatus(note);
 
     // Find the category section and append the note there
     const categorySection = document.querySelector(`.category-section[data-category="${category}"]`);
@@ -238,4 +263,190 @@ export function createCategorySection(categoryName) {
 
     // Add to main container
     container.appendChild(section);
+}
+
+// Function to create a deadline display element
+function createDeadlineElement(deadline) {
+    const deadlineContainer = document.createElement("div");
+    deadlineContainer.classList.add("note-deadline-container");
+
+    const deadlineIcon = document.createElement("span");
+    deadlineIcon.classList.add("deadline-icon");
+    deadlineIcon.textContent = "📅";
+
+    const deadlineText = document.createElement("span");
+    deadlineText.classList.add("deadline-text");
+    deadlineText.textContent = deadline;
+
+    deadlineContainer.appendChild(deadlineIcon);
+    deadlineContainer.appendChild(deadlineText);
+
+    return deadlineContainer;
+}
+
+// Function to update the deadline status (for visual indicator)
+export function updateDeadlineStatus(note) {
+    // Remove any existing status classes
+    note.classList.remove("deadline-approaching", "deadline-overdue");
+
+    const deadline = note.dataset.deadline;
+    if (!deadline) return;
+
+    // Parse the deadline (format: dd/mm-yyyy)
+    const [day, monthYear] = deadline.split('/');
+    const [month, year] = monthYear.split('-');
+
+    // JavaScript months are 0-indexed
+    const deadlineDate = new Date(year, parseInt(month) - 1, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+
+    const timeDiff = deadlineDate.getTime() - today.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    // Check if deadline is approaching (within 3 days) or overdue
+    if (daysDiff < 0) {
+        note.classList.add("deadline-overdue");
+    } else if (daysDiff <= 3) {
+        note.classList.add("deadline-approaching");
+    }
+}
+
+// Function to show a dialog for setting a deadline
+function showDeadlineDialog(note) {
+    // Create modal dialog
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    // Create modal content
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+
+    // Create title
+    const title = document.createElement('h3');
+    title.textContent = 'Set Deadline';
+    modalContent.appendChild(title);
+
+    // Create date input field
+    const dateLabel = document.createElement('label');
+    dateLabel.textContent = 'Select Date (dd/mm-yyyy):';
+    dateLabel.setAttribute('for', 'deadline-date-input');
+    modalContent.appendChild(dateLabel);
+
+    // Replace your native date input:
+    const dateInput = document.createElement('input');
+    dateInput.type        = 'text';
+    dateInput.id          = 'deadline-date-input';
+    dateInput.className   = 'modal-input';
+    dateInput.placeholder = 'dd/mm-yyyy';
+
+
+   // If there's already a deadline, set the input value
+    if (note.dataset.deadline) {
+        const [day, month, year] = note.dataset.deadline.split(/[-\/]/);
+        // Convert to the correct input format (yyyy-mm-dd)
+        dateInput.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
+    
+    dateInput.addEventListener("change", () => {
+        const [year, month, day] = dateInput.value.split("-");
+        note.dataset.deadline = `${day}/${month}-${year}`;
+    });
+    
+    modalContent.appendChild(dateInput);
+
+    // Create buttons
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('modal-buttons');
+
+    const removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove Deadline';
+    removeButton.addEventListener('click', () => {
+        // Remove deadline data attribute
+        note.dataset.deadline = '';
+
+        // Remove deadline element if it exists
+        const deadlineElement = note.querySelector('.note-deadline-container');
+        if (deadlineElement) {
+            note.removeChild(deadlineElement);
+        }
+
+        // Remove any status classes
+        note.classList.remove("deadline-approaching", "deadline-overdue");
+
+        // Save notes
+        saveNotes();
+        document.body.removeChild(modal);
+    });
+
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', () => {
+        document.body.removeChild(modal);
+    });
+
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'Save';
+    saveButton.classList.add('primary-button');
+    saveButton.addEventListener('click', () => {
+        if (!dateInput.value) {
+            alert('Please select a date');
+            return;
+        }
+
+        // Format date as dd/mm-yyyy
+        const date = new Date(dateInput.value);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const formattedDeadline = `${day}/${month}-${year}`;
+
+        // Update note's deadline data attribute
+        note.dataset.deadline = formattedDeadline;
+
+        // Remove existing deadline element if it exists
+        const existingDeadline = note.querySelector('.note-deadline-container');
+        if (existingDeadline) {
+            note.removeChild(existingDeadline);
+        }
+
+        // Add the new deadline element after the header
+        const deadlineElement = createDeadlineElement(formattedDeadline);
+        const header = note.querySelector('.note-header');
+        note.insertBefore(deadlineElement, header.nextSibling);
+
+        // Update deadline status (for visual indicator)
+        updateDeadlineStatus(note);
+
+        // Save notes
+        saveNotes();
+        document.body.removeChild(modal);
+    });
+
+    // Add buttons in this order: Remove (left), Cancel and Save (right)
+    buttonContainer.appendChild(removeButton);
+    const rightButtons = document.createElement('div');
+    rightButtons.style.marginLeft = 'auto';
+    rightButtons.appendChild(cancelButton);
+    rightButtons.appendChild(saveButton);
+    buttonContainer.appendChild(rightButtons);
+
+    modalContent.appendChild(buttonContainer);
+
+    // Add modal content to modal
+    modal.appendChild(modalContent);
+
+    // Add modal to body
+    document.body.appendChild(modal);
+
+    // Focus on date input
+    dateInput.focus();
+
+    // Close modal if clicking outside content
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
 }

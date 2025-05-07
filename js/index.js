@@ -25,7 +25,7 @@ clearAll.addEventListener("click", () => {
     localStorage.removeItem('stickyNotes');
 });
 
-// Function to create a new note with category selection
+// Update the showAddNoteDialog function to include deadline input
 function showAddNoteDialog() {
     // Create modal dialog
     const modal = document.createElement('div');
@@ -73,6 +73,18 @@ function showAddNoteDialog() {
 
     modalContent.appendChild(categorySelect);
 
+    // Add deadline input field (optional)
+    const deadlineLabel = document.createElement('label');
+    deadlineLabel.textContent = 'Set Deadline (optional):';
+    deadlineLabel.setAttribute('for', 'deadline-input');
+    modalContent.appendChild(deadlineLabel);
+
+    const deadlineInput = document.createElement('input');
+    deadlineInput.type = 'date';
+    deadlineInput.id = 'deadline-input';
+    deadlineInput.className = 'modal-input';
+    modalContent.appendChild(deadlineInput);
+
     // Create buttons
     const buttonContainer = document.createElement('div');
     buttonContainer.classList.add('modal-buttons');
@@ -89,7 +101,18 @@ function showAddNoteDialog() {
     createButton.addEventListener('click', () => {
         const selectedCategory = categorySelect.value;
         const noteTitle = titleInput.value.trim() || 'Title'; // Use entered title or default to 'Title'
-        createStickyNote(noteTitle, "Content", "#fff9a6", selectedCategory);
+        
+        // Format deadline if provided (dd/mm-yyyy)
+        let formattedDeadline = '';
+        if (deadlineInput.value) {
+            const date = new Date(deadlineInput.value);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            formattedDeadline = `${day}/${month}-${year}`;
+        }
+        
+        createStickyNote(noteTitle, "Content", "#fff9a6", selectedCategory, formattedDeadline);
         document.body.removeChild(modal);
     });
 
@@ -110,6 +133,7 @@ function showAddNoteDialog() {
         }
     });
 }
+
 
 // Add event listener for the Add Category button
 if (addCategoryBtn) {
@@ -498,3 +522,10 @@ document.addEventListener('DOMContentLoaded', () => {
         darkModeToggle.addEventListener('click', toggleDarkMode);
     }
 });
+
+// Create Sort by Deadline button
+const sortButton = document.createElement('button');
+sortButton.id = 'sortDeadlines';
+sortButton.className = 'buttons';
+sortButton.textContent = 'Sort by Deadline';
+sortButton.addEventListener('click', sortNotesByDeadline);
