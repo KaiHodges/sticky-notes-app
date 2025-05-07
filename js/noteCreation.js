@@ -335,10 +335,9 @@ function showDeadlineDialog(note) {
 
     // Replace your native date input:
     const dateInput = document.createElement('input');
-    dateInput.type        = 'text';
+    dateInput.type        = 'date';
     dateInput.id          = 'deadline-date-input';
     dateInput.className   = 'modal-input';
-    dateInput.placeholder = 'dd/mm-yyyy';
 
 
    // If there's already a deadline, set the input value
