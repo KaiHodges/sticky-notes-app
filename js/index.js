@@ -1,4 +1,4 @@
-import { saveNotes, loadNotes } from './noteStorage.js';
+import { saveNotes, loadNotes, sortNotesByDeadline } from './noteStorage.js';
 import { createStickyNote } from './noteCreation.js';
 import { getCategories, addCategory, getCategoryColor, setCategoryColor } from './categoryManagement.js';
 
@@ -529,3 +529,6 @@ sortButton.id = 'sortDeadlines';
 sortButton.className = 'buttons';
 sortButton.textContent = 'Sort by Deadline';
 sortButton.addEventListener('click', sortNotesByDeadline);
+
+// Add to button container
+document.getElementById('btnContainer').appendChild(sortButton);
