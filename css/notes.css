@@ -15,6 +15,9 @@
     height: 200px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .note-header {
@@ -24,6 +27,8 @@
     margin-bottom: 8px;
     overflow: visible;
     /* Allow title to be visible when scrolling */
+    flex-shrink: 0;
+    /* Prevent header from shrinking */
 }
 
 .note-title {
@@ -47,11 +52,14 @@
 
 .note-body {
     font-size: 14px;
-    height: 150px;
+    flex-grow: 1;
+    /* Fill remaining space */
     overflow-y: auto;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
+    min-height: 20px;
+    /* Ensure at least some visible space */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -98,6 +106,9 @@
     font-size: 12px;
     margin: 5px 0;
     color: #555;
+    flex-shrink: 0;
+    /* Prevent deadline from shrinking */
+    padding-bottom: 5px;
 }
 
 .deadline-icon {
@@ -117,9 +128,12 @@
     border-left: 4px solid red;
 }
 
-/* Make the note body smaller to accommodate the deadline */
-.note-deadline-container + .note-body {
-    height: 125px;
+/* Adjust note body height when deadline is present */
+.note-deadline-container+.note-body {
+    max-height: calc(100% - 40px);
+    /* Reduce height to accommodate deadline */
+    flex-basis: 0;
+    /* Allow flex-grow to work properly */
 }
 
 /* Dark mode support */
