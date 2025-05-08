@@ -23,6 +23,16 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    padding: 8px;
+    /* Added padding for consistency */
+    border: 2px dashed transparent;
+    /* Added transparent border to reserve space */
+    border-radius: 5px;
+    /* Optional: if you want rounded corners for the notes area */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    /* Smooth transition for highlighting */
+    min-height: 50px;
+    /* Ensure drop target has some height even if empty */
 }
 
 /* Modal dialog styles */
