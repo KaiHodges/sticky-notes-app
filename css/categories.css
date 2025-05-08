@@ -9,13 +9,15 @@
     align-items: center;
     margin-bottom: 10px;
     padding: 5px 20px;
-    background-color: rgba(36, 183, 252, 0.1);
+    /* Changed to a much more vibrant color */
+    background-color: #7de3ff;
     border-radius: 5px;
 }
 
 .category-title {
     font-size: 1.2em;
-    color: #333;
+    /* Changed from #333 to a darker color for better contrast */
+    color: #222;
     margin: 0;
 }
 
@@ -120,7 +122,9 @@ body.dark-mode .modal-input {
 }
 
 .active-category {
-    background-color: rgba(36, 183, 252, 0.1);
+    /* Changed to a much more vibrant color */
+    background-color: #24b7fc;
+    color: white;
     font-weight: bold;
 }
 
@@ -161,11 +165,12 @@ body.dark-mode .new-note-option {
 
 /* Dark mode support */
 body.dark-mode .category-header {
-    background-color: rgba(88, 182, 230, 0.2);
+    /* Changed to a much more vibrant color */
+    background-color: #0087c7;
 }
 
 body.dark-mode .category-title {
-    color: #e0e0e0;
+    color: #fff;
 }
 
 body.dark-mode .modal-content {
