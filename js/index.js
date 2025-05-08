@@ -26,7 +26,7 @@ clearAll.addEventListener("click", () => {
 });
 
 // Update the showAddNoteDialog function to include deadline input
-function showAddNoteDialog() {
+function showAddNoteDialog(preselectedCategory = null) {
     // Create modal dialog
     const modal = document.createElement('div');
     modal.classList.add('modal');
@@ -68,6 +68,10 @@ function showAddNoteDialog() {
         const option = document.createElement('option');
         option.value = category;
         option.textContent = category;
+        // If a preselected category is provided, select it
+        if (preselectedCategory && category === preselectedCategory) {
+            option.selected = true;
+        }
         categorySelect.appendChild(option);
     });
 
@@ -101,7 +105,7 @@ function showAddNoteDialog() {
     createButton.addEventListener('click', () => {
         const selectedCategory = categorySelect.value;
         const noteTitle = titleInput.value.trim() || 'Title'; // Use entered title or default to 'Title'
-        
+
         // Format deadline if provided (dd/mm-yyyy)
         let formattedDeadline = '';
         if (deadlineInput.value) {
@@ -111,7 +115,7 @@ function showAddNoteDialog() {
             const year = date.getFullYear();
             formattedDeadline = `${day}/${month}-${year}`;
         }
-        
+
         createStickyNote(noteTitle, "Content", "#fff9a6", selectedCategory, formattedDeadline);
         document.body.removeChild(modal);
     });
@@ -373,7 +377,8 @@ function createCategorySection(categoryName) {
     newNoteOption.classList.add('dropdown-item', 'new-note-option');
     newNoteOption.textContent = 'Add new note';
     newNoteOption.addEventListener('click', () => {
-        createStickyNote("Title", "Content", "#fff9a6", categoryName);
+        // Replace direct sticky note creation with the dialog
+        showAddNoteDialog(categoryName);
         dropdownContent.classList.remove('show');
     });
     dropdownContent.appendChild(newNoteOption);
