@@ -12,8 +12,8 @@ Users can create and manage digital notes directly in the browser.
 
 ## Preview
 
-![App Screenshot](assets/UpdatedScreenshot) <!-- Add screenshot here if available -->
-![App Screenshot](assets/DarkmodeScreenshot) <!-- Add screenshot here if available -->
+![App Screenshot](assets/UpdatedScreenshot.png) <!-- Add screenshot here if available -->
+![App Screenshot](assets/DarkmodeScreenshot.png) <!-- Add screenshot here if available -->
 
 
 ## Technologies Used
