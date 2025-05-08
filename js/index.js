@@ -1,6 +1,7 @@
 import { saveNotes, loadNotes, sortNotesByDeadline } from './noteStorage.js';
 import { createStickyNote } from './noteCreation.js';
 import { getCategories, addCategory, getCategoryColor, setCategoryColor } from './categoryManagement.js';
+import { initializeDragAndDrop } from './dragAndDrop.js'; // Import the new module
 
 // Get reference to the "Add Note" and "Clear All" buttons
 const addNewNote = document.getElementById("addNewnote");
@@ -117,6 +118,8 @@ function showAddNoteDialog(preselectedCategory = null) {
         }
 
         createStickyNote(noteTitle, "Content", "#fff9a6", selectedCategory, formattedDeadline);
+        saveNotes(); // Save the new note to localStorage
+        initializeDragAndDrop(); // Make the new note draggable and update drop targets
         document.body.removeChild(modal);
     });
 
@@ -258,7 +261,7 @@ function showAddCategoryDialog() {
             if (categoryHeader) {
                 categoryHeader.style.backgroundColor = selectedColor;
             }
-
+            initializeDragAndDrop(); // Ensure new category container is a drop target
             document.body.removeChild(modal);
         } else {
             alert("Category already exists!");
@@ -481,6 +484,7 @@ function handleCategoryRemoval(categoryName, sectionElement) {
 
     // Save notes with updated categories
     saveNotes();
+    initializeDragAndDrop(); // Re-initialize in case notes were moved or categories changed
 }
 
 // Function to toggle dark mode
@@ -516,7 +520,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Load saved notes
-    loadNotes();
+    loadNotes(); // This calls createStickyNote, which now assigns IDs
+
+    initializeDragAndDrop(); // Initialize for all loaded notes and category containers
 
     // Check if dark mode was previously enabled
     checkDarkModePreference();
