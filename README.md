@@ -31,7 +31,7 @@ A simple yet powerful web-based sticky notes application built with HTML, CSS, a
 
 ## Webadress 
 
-tetli.net
+[tetli.net](https://tetli.net/)
 
 ## 📄 License
 
