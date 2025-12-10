@@ -29,9 +29,7 @@ A simple yet powerful web-based sticky notes application built with HTML, CSS, a
 * Albin Tetli
 * Kai Hodges
 
-## Webadress 
-
-[tetli.net](https://tetli.net/)
+## Webadress (no longer available)
 
 ## 📄 License
 
